@@ -6,7 +6,7 @@ COPY package*.json ./
 USER node
 RUN npm install
 USER root
-RUN apk update && apk add curl
+RUN apk update && apk add curl wscat
 COPY --chown=node:node . .
 EXPOSE 1234
 CMD [ "npm", "start" ]

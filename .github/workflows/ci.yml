@@ -43,3 +43,13 @@ jobs:
       
       - name: Preversion
         run: npm run preversion
+
+      - name: Build image push to aliyun
+        uses: docker/build-push-action@v1
+        with:
+          registry: ${{ secrets.ALI_DOCKER_HUB_REGISTRY }}
+          username: ${{ secrets.ALIYUN_DOCKER_REPO_USER_NAME }}
+          password: ${{ secrets.ALIYUN_DOCKER_REPO_USER_PASSWORD }}
+          tags: ${{ github.sha }}
+          repository: reddwarf-pro/y-websocket
+          path: '.'

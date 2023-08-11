@@ -45,7 +45,7 @@ if (typeof persistenceDir === 'string') {
           if (err) {
             console.error('Failed to write file:', err)
           } else {
-            console.log('File synchronized to disk successfully!')
+            console.log('File synchronized to disk successfully!',ydoc.name)
           }
         })
       })

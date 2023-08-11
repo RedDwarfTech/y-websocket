@@ -1,4 +1,5 @@
 const Y = require('yjs')
+const fs = require('fs')
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 
@@ -40,21 +41,17 @@ if (typeof persistenceDir === 'string') {
       Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
       ydoc.on('update', update => {
         ldb.storeUpdate(docName, update)
-        saveFileToDisk(docName)
+        fs.writeFile('/opt/file.tex', docName, (err) => {
+          if (err) {
+            console.error('Failed to write file:', err)
+          } else {
+            console.log('File synchronized to disk successfully!')
+          }
+        })
       })
     },
     writeState: async (docName, ydoc) => {}
   }
-}
-
-const saveFileToDisk = async (content) => {
-  fs.writeFile('/opt/file.tex', content.toString(), (err) => {
-    if (err) {
-      console.error('Failed to write file:', err);
-    } else {
-      console.log('File synchronized to disk successfully!');
-    }
-  });
 }
 
 /**

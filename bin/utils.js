@@ -41,7 +41,7 @@ if (typeof persistenceDir === 'string') {
       Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
       ydoc.on('update', update => {
         ldb.storeUpdate(docName, update)
-        fs.writeFile('/opt/file.tex', docName, (err) => {
+        fs.writeFile('/opt/data/project/8919d43a4f034c41ab582c27a04a7058/main.tex', docName, (err) => {
           if (err) {
             console.error('Failed to write file:', err)
           } else {

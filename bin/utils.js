@@ -52,12 +52,15 @@ if (typeof persistenceDir === 'string') {
 const handleFileSync = (docName, ydoc) => {
   try {
     let fileContent = getFileJsonData(docName)
-    console.log('file info:', fileContent)
-    fs.writeFile('/opt/data/project/8919d43a4f034c41ab582c27a04a7058/main.tex', docName, (err) => {
+    if (!fileContent) {
+      console.error(`get file info failed，file info: ${fileContent},docName:${docName}`)
+      return
+    }
+    let projectId = fileContent.result.project_id
+    let fileName = fileContent.result.name
+    fs.writeFile(`/opt/data/project/${projectId}/${fileName}`, docName, (err) => {
       if (err) {
         console.error('Failed to write file:', err)
-      } else {
-        console.log('File synchronized to disk successfully!', ydoc.name)
       }
     })
   } catch (err) {

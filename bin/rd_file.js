@@ -5,6 +5,9 @@ const handleFileSync = async (docName, ldb) => {
   try {
     const persistedYdoc = await ldb.getYDoc(docName)
     let text = persistedYdoc.getText(docName)
+    if(!text || !text.toString()){
+        return
+    }
     console.info('text result:' + text.toString())
     let fileContent = await getFileJsonData(docName)
     if (!fileContent) {

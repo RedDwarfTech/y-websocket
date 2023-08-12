@@ -1,6 +1,6 @@
 const http = require('http')
 
-export async function getFileJsonData (fileId) {
+const getFileJsonData = (fileId) => {
   const baseUrl = 'http://texhub-server-service.reddwarf-pro.cluster.local'
   const url = `${baseUrl}/tex/file/detail?file_id=${encodeURIComponent(fileId)}`
   http.get(url, (response) => {
@@ -16,3 +16,4 @@ export async function getFileJsonData (fileId) {
     console.error(error)
   })
 }
+exports.getFileJsonData = getFileJsonData

@@ -1,8 +1,11 @@
 const getFileJsonData = require('./rest_client.js').getFileJsonData
 const fs = require('fs')
 
-const handleFileSync = async (docName, ydoc, content) => {
+const handleFileSync = async (docName, ldb) => {
   try {
+    const persistedYdoc = await ldb.getYDoc(docName)
+    let text = persistedYdoc.getText(docName)
+    console.info('text result:' + text.toString())
     let fileContent = await getFileJsonData(docName)
     if (!fileContent) {
       console.error(`get file info failed，file info: ${fileContent},docName:${docName}`)
@@ -10,7 +13,7 @@ const handleFileSync = async (docName, ydoc, content) => {
     }
     let projectId = fileContent.result.project_id
     let fileName = fileContent.result.name
-    fs.writeFile(`/opt/data/project/${projectId}/${fileName}`, content, (err) => {
+    fs.writeFile(`/opt/data/project/${projectId}/${fileName}`, text.toString(), (err) => {
       if (err) {
         console.error('Failed to write file:', err)
       }

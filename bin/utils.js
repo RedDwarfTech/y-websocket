@@ -45,12 +45,12 @@ if (typeof persistenceDir === 'string') {
           if (err) {
             console.error('Failed to write file:', err)
           } else {
-            console.log('File synchronized to disk successfully!',ydoc.name)
+            console.log('File synchronized to disk successfully!', ydoc.name)
           }
         })
       })
     },
-    writeState: async (docName, ydoc) => {}
+    writeState: async (docName, ydoc) => { }
   }
 }
 
@@ -188,10 +188,21 @@ const messageListener = (conn, doc, message) => {
         awarenessProtocol.applyAwarenessUpdate(doc.awareness, decoding.readVarUint8Array(decoder), conn)
         break
       }
+      default:
+        customMesgHandler(messageType)
+        break
     }
   } catch (err) {
     console.error(err)
     doc.emit('error', [err])
+  }
+}
+
+const customMesgHandler = (decoder) => {
+  try {
+    console.info('message', decoder)
+  } catch (err) {
+    console.error('custom message handler facing issue', err)
   }
 }
 

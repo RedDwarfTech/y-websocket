@@ -189,7 +189,7 @@ const messageListener = (conn, doc, message) => {
         break
       }
     }
-    customMesgHandler(messageType)
+    customMesgHandler(decoder)
   } catch (err) {
     console.error(err)
     doc.emit('error', [err])

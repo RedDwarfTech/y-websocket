@@ -1,7 +1,7 @@
 const http = require('http')
 
 const getFileJsonData = (fileId) => {
-  const baseUrl = 'http://texhub-server-service.reddwarf-pro.cluster.local'
+  const baseUrl = 'http://tex-service.reddwarf-pro.svc.cluster.local:8000'
   const url = `${baseUrl}/tex/file/detail?file_id=${encodeURIComponent(fileId)}`
   http.get(url, (response) => {
     let data = ''

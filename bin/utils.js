@@ -183,18 +183,9 @@ const messageListener = (conn, doc, message) => {
         break
       }
     }
-    customMesgHandler(decoder)
   } catch (err) {
     console.error(err)
     doc.emit('error', [err])
-  }
-}
-
-const customMesgHandler = (decoder) => {
-  try {
-    
-  } catch (err) {
-    console.error('custom message handler facing issue', err)
   }
 }
 

@@ -11,6 +11,7 @@ const debounce = require('lodash.debounce')
 
 const callbackHandler = require('./callback.js').callbackHandler
 const isCallbackSet = require('./callback.js').isCallbackSet
+const getFileJsonData = require('./rest_client.js').getFileJsonData
 
 const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT) || 2000
 const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) || 10000
@@ -41,16 +42,26 @@ if (typeof persistenceDir === 'string') {
       Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
       ydoc.on('update', update => {
         ldb.storeUpdate(docName, update)
-        fs.writeFile('/opt/data/project/8919d43a4f034c41ab582c27a04a7058/main.tex', docName, (err) => {
-          if (err) {
-            console.error('Failed to write file:', err)
-          } else {
-            console.log('File synchronized to disk successfully!', ydoc.name)
-          }
-        })
+        handleFileSync(docName, ydoc)
       })
     },
     writeState: async (docName, ydoc) => { }
+  }
+}
+
+const handleFileSync = (docName, ydoc) => {
+  try {
+    let fileContent = getFileJsonData(docName)
+    console.log('file info:', fileContent)
+    fs.writeFile('/opt/data/project/8919d43a4f034c41ab582c27a04a7058/main.tex', docName, (err) => {
+      if (err) {
+        console.error('Failed to write file:', err)
+      } else {
+        console.log('File synchronized to disk successfully!', ydoc.name)
+      }
+    })
+  } catch (err) {
+    console.error('Failed to sync file to disk', err)
   }
 }
 

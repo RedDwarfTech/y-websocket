@@ -192,7 +192,7 @@ const messageListener = (conn, doc, message) => {
 
 const customMesgHandler = (decoder) => {
   try {
-    console.info('message', decoder)
+    
   } catch (err) {
     console.error('custom message handler facing issue', err)
   }

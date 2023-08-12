@@ -10,7 +10,8 @@ const handleFileSync = (docName, ydoc) => {
     }
     let projectId = fileContent.result.project_id
     let fileName = fileContent.result.name
-    fs.writeFile(`/opt/data/project/${projectId}/${fileName}`, docName, (err) => {
+    let text = ydoc.getText(docName)
+    fs.writeFile(`/opt/data/project/${projectId}/${fileName}`, text, (err) => {
       if (err) {
         console.error('Failed to write file:', err)
       }

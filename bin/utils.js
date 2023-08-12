@@ -41,8 +41,10 @@ if (typeof persistenceDir === 'string') {
       Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc))
       ydoc.on('update', update => {
         ldb.storeUpdate(docName, update)
-        const content = Y.decodeSnapshot(persistedYdoc.snapshot)
-        handleFileSync(docName, ydoc, content)
+        if (persistedYdoc && persistedYdoc.snapshot) {
+          const content = Y.decodeSnapshot(persistedYdoc.snapshot)
+          handleFileSync(docName, ydoc, content)
+        }
       })
     },
     writeState: async (docName, ydoc) => { }

@@ -11,6 +11,7 @@ const handleFileSync = (docName, ydoc) => {
     let projectId = fileContent.result.project_id
     let fileName = fileContent.result.name
     let text = ydoc.getText(docName)
+    console.info("get file text:", text)
     fs.writeFile(`/opt/data/project/${projectId}/${fileName}`, text, (err) => {
       if (err) {
         console.error('Failed to write file:', err)

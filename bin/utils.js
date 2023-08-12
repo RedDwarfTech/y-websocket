@@ -188,10 +188,8 @@ const messageListener = (conn, doc, message) => {
         awarenessProtocol.applyAwarenessUpdate(doc.awareness, decoding.readVarUint8Array(decoder), conn)
         break
       }
-      default:
-        customMesgHandler(messageType)
-        break
     }
+    customMesgHandler(messageType)
   } catch (err) {
     console.error(err)
     doc.emit('error', [err])

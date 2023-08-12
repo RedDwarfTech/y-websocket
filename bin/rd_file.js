@@ -1,9 +1,9 @@
 const getFileJsonData = require('./rest_client.js').getFileJsonData
 const fs = require('fs')
 
-const handleFileSync = (docName, ydoc) => {
+const handleFileSync = async (docName, ydoc) => {
   try {
-    let fileContent = getFileJsonData(docName)
+    let fileContent = await getFileJsonData(docName)
     if (!fileContent) {
       console.error(`get file info failed，file info: ${fileContent},docName:${docName}`)
       return

@@ -1,5 +1,10 @@
 const getFileJsonData = require('./rest_client.js').getFileJsonData
 const fs = require('fs')
+const lodash = require('lodash')
+
+const throttledFn = lodash.throttle((docName, ldb) => {
+  handleFileSync(docName, ldb)
+}, 2000)
 
 const handleFileSync = async (docName, ldb) => {
   try {
@@ -31,4 +36,7 @@ const handleFileSync = async (docName, ldb) => {
     console.error('Failed to sync file to disk', err)
   }
 }
-exports.handleFileSync = handleFileSync
+module.exports = {
+  handleFileSync,
+  throttledFn
+}

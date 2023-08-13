@@ -5,12 +5,11 @@ const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 const encoding = require('lib0/dist/encoding.cjs')
 const decoding = require('lib0/dist/decoding.cjs')
 const map = require('lib0/dist/map.cjs')
-const lodash = require('lodash')
 const debounce = require('lodash.debounce')
 
 const callbackHandler = require('./callback.js').callbackHandler
 const isCallbackSet = require('./callback.js').isCallbackSet
-const handleFileSync = require('./rd_file.js').handleFileSync
+const rdfile = require('./rd_file.js')
 
 const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT) || 2000
 const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) || 10000
@@ -42,19 +41,13 @@ if (typeof persistenceDir === 'string') {
       ydoc.on('update', update => {
         ldb.storeUpdate(docName, update)
         if (persistedYdoc) {
-          lodash.throttle(() => {
-            throttledFn(docName, ldb)
-          }, 2000)
+          rdfile.throttledFn(docName, ldb)
         }
       })
     },
     writeState: async (docName, ydoc) => { }
   }
 }
-
-const throttledFn = lodash.throttle((docName, ldb) => {
-  handleFileSync(docName, ldb)
-}, 2000)
 
 /**
  * @param {{bindState: function(string,WSSharedDoc):void,

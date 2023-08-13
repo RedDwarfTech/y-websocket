@@ -16,7 +16,13 @@ const handleFileSync = async (docName, ldb) => {
     }
     let projectId = fileContent.result.project_id
     let fileName = fileContent.result.name
-    fs.writeFile(`/opt/data/project/${projectId}/${fileName}`, text.toString(), (err) => {
+    let folderPath = `/opt/data/project/${projectId}`
+    fs.mkdir(folderPath, { recursive: true }, (error) => {
+      if (error) {
+        console.error('craete directory failed,', error)
+      }
+    })
+    fs.writeFile(`${folderPath}/${fileName}`, text.toString(), (err) => {
       if (err) {
         console.error('Failed to write file:', err)
       }

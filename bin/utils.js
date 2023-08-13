@@ -43,7 +43,7 @@ if (typeof persistenceDir === 'string') {
         ldb.storeUpdate(docName, update)
         if (persistedYdoc) {
           lodash.throttle(() => {
-            handleFileSync(docName, ldb)
+            throttledFn(docName, ldb)
           }, 2000)
         }
       })
@@ -51,6 +51,10 @@ if (typeof persistenceDir === 'string') {
     writeState: async (docName, ydoc) => { }
   }
 }
+
+const throttledFn = lodash.throttle((docName, ldb) => {
+  handleFileSync(docName, ldb)
+}, 2000)
 
 /**
  * @param {{bindState: function(string,WSSharedDoc):void,

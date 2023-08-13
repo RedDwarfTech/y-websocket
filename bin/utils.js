@@ -5,7 +5,7 @@ const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 const encoding = require('lib0/dist/encoding.cjs')
 const decoding = require('lib0/dist/decoding.cjs')
 const map = require('lib0/dist/map.cjs')
-
+const lodash = require('lodash')
 const debounce = require('lodash.debounce')
 
 const callbackHandler = require('./callback.js').callbackHandler
@@ -42,7 +42,9 @@ if (typeof persistenceDir === 'string') {
       ydoc.on('update', update => {
         ldb.storeUpdate(docName, update)
         if (persistedYdoc) {
-          handleFileSync(docName, ldb)
+          lodash.throttle(() => {
+            handleFileSync(docName, ldb)
+          }, 2000)
         }
       })
     },

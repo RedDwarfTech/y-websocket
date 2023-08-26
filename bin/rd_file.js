@@ -13,7 +13,6 @@ const handleFileSync = async (docName, ldb) => {
     if (!text || !text.toString()) {
       return
     }
-    console.info('text result:' + text.toString())
     let fileContent = await getFileJsonData(docName)
     if (!fileContent) {
       console.error(`get file info failed，file info: ${fileContent},docName:${docName}`)

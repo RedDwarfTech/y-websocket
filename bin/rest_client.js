@@ -11,7 +11,6 @@ const getFileJsonData = (fileId) => {
       })
       response.on('end', () => {
         const json = JSON.parse(data)
-        console.log(json)
         resolve(json)
       })
     }).on('promise error', (error) => {

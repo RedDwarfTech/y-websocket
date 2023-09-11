@@ -20,7 +20,8 @@ const handleFileSync = async (docName, ldb) => {
     }
     let projectId = fileContent.result.project_id
     let fileName = fileContent.result.name
-    let folderPath = `/opt/data/project/${projectId}`
+    let filePath = fileContent.result.file_path
+    let folderPath = path.join(`/opt/data/project/${projectId}`,filePath)
     fs.mkdir(folderPath, { recursive: true }, (error) => {
       if (error) {
         console.error('craete directory failed,', error)

@@ -5,9 +5,9 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post('/y-websocket/file/initial', (req, res) => {
-  const docId = req.body.docId;
-  const projectId = req.body.projectId;
-  const initContext = req.body.initContext;
+  const docId = req.body.doc_id;
+  const projectId = req.body.project_id;
+  const initContext = req.body.file_content;
   console.log(docId, projectId, initContext);
   init_tpl(docId, projectId, initContext);
   res.send('请求已成功处理');

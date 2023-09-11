@@ -1,6 +1,7 @@
 const getFileJsonData = require('./rest_client.js').getFileJsonData
 const fs = require('fs')
 const lodash = require('lodash')
+const path = require('path')
 
 const throttledFn = lodash.throttle((docName, ldb) => {
   handleFileSync(docName, ldb)
@@ -21,7 +22,7 @@ const handleFileSync = async (docName, ldb) => {
     let projectId = fileContent.result.project_id
     let fileName = fileContent.result.name
     let filePath = fileContent.result.file_path
-    let folderPath = path.join(`/opt/data/project/${projectId}`,filePath)
+    let folderPath = path.join(`/opt/data/project/${projectId}`, filePath)
     fs.mkdir(folderPath, { recursive: true }, (error) => {
       if (error) {
         console.error('craete directory failed,', error)

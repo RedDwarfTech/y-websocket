@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const Y = require('yjs')
-const WebsocketProvider = require('y-websocket')
+const { WebsocketProvider } = require('y-websocket')
 const app = express()
 app.use(bodyParser.json())
 

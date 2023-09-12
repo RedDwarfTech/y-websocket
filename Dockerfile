@@ -9,4 +9,5 @@ RUN apk update && apk add curl websocat
 COPY --chown=node:node . .
 COPY ./scripts/startup-app.sh /home/node/app
 EXPOSE 1234
+EXPOSE 3000
 CMD ["sh","./startup-app.sh"]

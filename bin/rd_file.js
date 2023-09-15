@@ -22,7 +22,10 @@ const handleFileSync = async (docName, ldb) => {
     let projectId = fileContent.result.project_id
     let fileName = fileContent.result.name
     let filePath = fileContent.result.file_path
-    let folderPath = path.join(`/opt/data/project/${projectId}`, filePath)
+    let date = new Date(fileContent.result.project_created_time);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    let folderPath = path.join(`/opt/data/project/${year}/${month}/${projectId}`, filePath)
     fs.mkdir(folderPath, { recursive: true }, (error) => {
       if (error) {
         console.error('craete directory failed,', error)

@@ -11,11 +11,11 @@ app.post('/y-websocket/file/initial', (req, res) => {
   const initContext = req.body.file_content
   console.log(docId, projectId, initContext)
   initTpl(docId, projectId, initContext)
-  res.send('请求已成功处理')
+  res.send('success')
 })
 
 app.listen(3000, () => {
-  console.log('服务器已启动')
+  console.log('started')
 })
 
 const initTpl = (docId, projectId, initContext) => {

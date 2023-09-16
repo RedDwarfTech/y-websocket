@@ -24,16 +24,14 @@ const handleFileSync = async (docName, ldb) => {
     let filePath = fileContent.result.file_path
     let date = new Date(fileContent.result.project_created_time)
     const year = date.getFullYear()
-    const month = date.getMonth()
+    const month = date.getMonth() + 1
     let folderPath = path.join(`/opt/data/project/${year}/${month}/${projectId}`, filePath)
     fs.mkdir(folderPath, { recursive: true }, (error) => {
       if (error) {
         console.error('craete directory failed,', error)
       }
     })
-    let fullFilePath = folderPath + fileName
-    console.log(fullFilePath + text.toString())
-    fs.writeFile(fullFilePath, text.toString(), (err) => {
+    fs.writeFile(path.join(folderPath, fileName), text.toString(), (err) => {
       if (err) {
         console.error('Failed to write file:', err)
       }

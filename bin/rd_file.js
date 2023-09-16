@@ -31,7 +31,9 @@ const handleFileSync = async (docName, ldb) => {
         console.error('craete directory failed,', error)
       }
     })
-    fs.writeFile(path.join(folderPath, fileName), text.toString(), (err) => {
+    let fullFilePath = folderPath + fileName
+    console.log(fullFilePath + text.toString())
+    fs.writeFile(fullFilePath, text.toString(), (err) => {
       if (err) {
         console.error('Failed to write file:', err)
       }

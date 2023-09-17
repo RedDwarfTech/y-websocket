@@ -12,8 +12,13 @@ const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234
 
 const server = http.createServer((request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/plain' })
-  response.end('okay')
+  if (request.url === '/healthz') {
+    response.writeHead(200, { 'Content-Type': 'text/plain' })
+    response.end('ok')
+  } else {
+    response.writeHead(200, { 'Content-Type': 'text/plain' })
+    response.end('okay')
+  }
 })
 
 wss.on('connection', setupWSConnection)

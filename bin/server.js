@@ -8,7 +8,7 @@ const http = require('http')
 const wss = new WebSocket.Server({ noServer: true })
 const setupWSConnection = require('./utils.js').setupWSConnection
 
-const host = process.env.HOST || 'localhost'
+const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234
 
 const server = http.createServer((request, response) => {

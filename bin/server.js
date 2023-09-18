@@ -30,6 +30,13 @@ server.on('upgrade', (request, socket, head) => {
    * @param {any} ws
    */
   const handleAuth = ws => {
+    const url = new URL(request.url, 'wss://ws.poemhub.top')
+    const token = url.searchParams.get('token')
+    if (!token) {
+      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
+      socket.destroy()
+      return
+    }
     wss.emit('connection', ws, request)
   }
   wss.handleUpgrade(request, socket, head, handleAuth)

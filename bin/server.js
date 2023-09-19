@@ -43,10 +43,10 @@ server.on('upgrade', (request, socket, head) => {
         return
       }
       try {
-        console.log('sign key:' + JWT_SIGN_KEY)
         jwt.verify(token, JWT_SIGN_KEY)
         wss.emit('connection', ws, request)
       } catch (err) {
+        console.error('error:' + err)
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
         socket.destroy()
       }

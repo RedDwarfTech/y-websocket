@@ -12,7 +12,6 @@ const setupWSConnection = require('./utils.js').setupWSConnection
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234
 const JWT_SIGN_KEY = process.env.JWT_SIGN_KEY || 'key-missing'
-const HEALTHZ_PATH = '/healthz'
 
 const server = http.createServer((request, response) => {
   if (request.url === '/healthz') {
@@ -34,7 +33,8 @@ server.on('upgrade', (request, socket, head) => {
    */
   const handleAuth = ws => {
     const url = new URL(request.url, 'wss://ws.poemhub.top')
-    if (url.pathname !== HEALTHZ_PATH) {
+    console.log(url.pathname)
+    if (request.url !== '/healthz') {
       const token = url.searchParams.get('token')
       if (!token) {
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')

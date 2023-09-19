@@ -35,7 +35,8 @@ server.on('upgrade', (request, socket, head) => {
     const url = new URL(request.url, 'wss://ws.poemhub.top')
     console.log(url.pathname)
     if (request.url !== '/healthz') {
-      const token = url.searchParams.get('token')
+      // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
+      const token = url.searchParams.get('access_token')
       if (!token) {
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
         socket.destroy()

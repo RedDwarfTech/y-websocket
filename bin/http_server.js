@@ -9,7 +9,6 @@ app.post('/y-websocket/file/initial', (req, res) => {
   const docId = req.body.doc_id
   const projectId = req.body.project_id
   const initContext = req.body.file_content
-  console.log(docId, projectId, initContext)
   initTpl(docId, projectId, initContext)
   res.send('success')
 })
@@ -30,7 +29,6 @@ const initTpl = (docId, projectId, initContext) => {
     if (event.status === 'connected') {
       if (wsProvider.ws) {
         if (initContext && initContext.length > 0) {
-          console.log('write: {}', initContext)
           ytext.insert(0, initContext)
         }
       }

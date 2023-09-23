@@ -10,11 +10,15 @@ const getFileJsonData = (fileId) => {
         data += chunk
       })
       response.on('end', () => {
-        const json = JSON.parse(data)
-        resolve(json)
+        try {
+          const json = JSON.parse(data)
+          resolve(json)
+        } catch (e) {
+          console.error('parse json failed' + e + ',data:' + data)
+        }
       })
     }).on('promise error', (error) => {
-      console.error(error)
+      console.error('get file info error' + error)
       reject(error)
     })
   })

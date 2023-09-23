@@ -33,7 +33,6 @@ server.on('upgrade', (request, socket, head) => {
    */
   const handleAuth = ws => {
     const url = new URL(request.url, 'wss://ws.poemhub.top')
-    console.log(url.pathname)
     if (request.url !== '/healthz') {
       // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
       const token = url.searchParams.get('access_token')

@@ -72,7 +72,7 @@ exports.docs = docs
 
 const messageSync = 0
 const messageAwareness = 1
-const messageAuth = 2
+// const messageAuth = 2
 
 /**
  * @param {Uint8Array} update

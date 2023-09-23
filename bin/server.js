@@ -6,7 +6,6 @@
 const WebSocket = require('ws')
 const http = require('http')
 const jwt = require('jsonwebtoken')
-const encoding = require('lib0/dist/encoding.cjs')
 const wss = new WebSocket.Server({ noServer: true })
 const setupWSConnection = require('./utils.js').setupWSConnection
 
@@ -35,15 +34,11 @@ server.on('upgrade', (request, socket, head) => {
   const handleAuth = ws => {
     const url = new URL(request.url, 'wss://ws.poemhub.top')
     if (request.url !== '/healthz') {
-      const encoder = encoding.createEncoder()
-      encoding.writeVarUint(encoder, 2)
-      ws.send(encoding.toUint8Array(encoder))
-
       // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
       const token = url.searchParams.get('access_token')
       if (!token) {
-        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
-        socket.destroy()
+        let err = new Error('401-NO_TOKEN')
+        socket.destroy(err)
         return
       }
       try {
@@ -51,7 +46,10 @@ server.on('upgrade', (request, socket, head) => {
         wss.emit('connection', ws, request)
       } catch (err) {
         console.error('error:' + err)
+        socket.destroy(err)
       }
+      let err = new Error('200-OK')
+      socket.destroy(err)
     }
   }
   wss.handleUpgrade(request, socket, head, handleAuth)

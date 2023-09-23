@@ -36,7 +36,7 @@ server.on('upgrade', (request, socket, head) => {
     const url = new URL(request.url, 'wss://ws.poemhub.top')
     if (request.url !== '/healthz') {
       const encoder = encoding.createEncoder()
-      encoding.writeVarUint(encoder, -11111)
+      encoding.writeVarUint(encoder, -1)
       ws.send(encoding.toUint8Array(encoder))
 
       // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param

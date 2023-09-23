@@ -34,7 +34,7 @@ server.on('upgrade', (request, socket, head) => {
   const handleAuth = ws => {
     const url = new URL(request.url, 'wss://ws.poemhub.top')
     if (request.url !== '/healthz') {
-      ws.send(JSON.stringify({ error: 'Authentication failed test.' }));
+      ws.send(JSON.stringify({ error: 'Authentication failed test.' }))
       // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
       const token = url.searchParams.get('access_token')
       if (!token) {
@@ -47,7 +47,7 @@ server.on('upgrade', (request, socket, head) => {
         wss.emit('connection', ws, request)
       } catch (err) {
         console.error('error:' + err)
-        ws.send(JSON.stringify({ error: 'Authentication failed.' }));
+        ws.send(JSON.stringify({ error: 'Authentication failed.' }))
       }
     }
   }

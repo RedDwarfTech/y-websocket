@@ -6,6 +6,7 @@
 const WebSocket = require('ws')
 const http = require('http')
 const jwt = require('jsonwebtoken')
+const encoding = require('lib0/dist/encoding.cjs')
 const wss = new WebSocket.Server({ noServer: true })
 const setupWSConnection = require('./utils.js').setupWSConnection
 
@@ -34,7 +35,10 @@ server.on('upgrade', (request, socket, head) => {
   const handleAuth = ws => {
     const url = new URL(request.url, 'wss://ws.poemhub.top')
     if (request.url !== '/healthz') {
-      ws.send(JSON.stringify({ error: 'Authentication failed test.' }))
+      const encoder = encoding.createEncoder()
+      encoding.writeVarUint(encoder, -11111)
+      ws.send(encoding.toUint8Array(encoder))
+
       // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
       const token = url.searchParams.get('access_token')
       if (!token) {
@@ -47,7 +51,6 @@ server.on('upgrade', (request, socket, head) => {
         wss.emit('connection', ws, request)
       } catch (err) {
         console.error('error:' + err)
-        ws.send(JSON.stringify({ error: 'Authentication failed.' }))
       }
     }
   }

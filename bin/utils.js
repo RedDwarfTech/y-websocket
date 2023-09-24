@@ -21,8 +21,8 @@ const wsReadyStateOpen = 1
 const wsReadyStateClosing = 2 // eslint-disable-line
 const wsReadyStateClosed = 3 // eslint-disable-line
 
-export const WEBSOCKET_AUTH_FAILED = 4000
-export const WEBSOCKET_AUTH_TOKEN_EXPIRE = 4001
+const WEBSOCKET_AUTH_FAILED = 4000
+const WEBSOCKET_AUTH_TOKEN_EXPIRE = 4001
 
 // disable gc when using snapshots!
 const gcEnabled = process.env.GC !== 'false' && process.env.GC !== '0'

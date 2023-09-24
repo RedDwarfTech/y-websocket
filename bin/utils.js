@@ -6,6 +6,7 @@ const encoding = require('lib0/dist/encoding.cjs')
 const decoding = require('lib0/dist/decoding.cjs')
 const map = require('lib0/dist/map.cjs')
 const debounce = require('lodash.debounce')
+const jwt = require('jsonwebtoken')
 
 const callbackHandler = require('./callback.js').callbackHandler
 const isCallbackSet = require('./callback.js').isCallbackSet
@@ -13,13 +14,15 @@ const rdfile = require('./rd_file.js')
 
 const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT) || 2000
 const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) || 10000
+const JWT_SIGN_KEY = process.env.JWT_SIGN_KEY || 'key-missing'
 
 const wsReadyStateConnecting = 0
 const wsReadyStateOpen = 1
 const wsReadyStateClosing = 2 // eslint-disable-line
 const wsReadyStateClosed = 3 // eslint-disable-line
 
-const WEBSOCKET_AUTH_FAILED = 4000
+export const WEBSOCKET_AUTH_FAILED = 4000
+export const WEBSOCKET_AUTH_TOKEN_EXPIRE = 4001
 
 // disable gc when using snapshots!
 const gcEnabled = process.env.GC !== 'false' && process.env.GC !== '0'
@@ -234,13 +237,35 @@ const send = (doc, conn, m) => {
 
 const pingTimeout = 30000
 
+const handleAuth = (request, conn) => {
+  const url = new URL(request.url, 'wss://ws.poemhub.top')
+  if (request.url !== '/healthz') {
+    // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
+    const token = url.searchParams.get('access_token')
+    try {
+      jwt.verify(token, JWT_SIGN_KEY)
+    } catch (err) {
+      switch (err.name) {
+        case 'TokenExpiredError':
+          console.error('expire:' + err)
+          conn.close(WEBSOCKET_AUTH_TOKEN_EXPIRE)
+          break
+        case 'JsonWebTokenError':
+          console.error('error:' + err)
+          conn.close(WEBSOCKET_AUTH_FAILED)
+          break
+      }
+    }
+  }
+}
+
 /**
  * @param {any} conn
  * @param {any} req
  * @param {any} opts
  */
 exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[0], gc = true } = {}) => {
-  conn.close(WEBSOCKET_AUTH_FAILED)
+  handleAuth(req, conn)
   conn.binaryType = 'arraybuffer'
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docName, gc)

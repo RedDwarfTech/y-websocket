@@ -5,13 +5,10 @@
  */
 const WebSocket = require('ws')
 const http = require('http')
-// const jwt = require('jsonwebtoken')
 const wss = new WebSocket.Server({ noServer: true })
 const setupWSConnection = require('./utils.js').setupWSConnection
-
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234
-// const JWT_SIGN_KEY = process.env.JWT_SIGN_KEY || 'key-missing'
 
 const server = http.createServer((request, response) => {
   if (request.url === '/healthz') {
@@ -32,17 +29,7 @@ server.on('upgrade', (request, socket, head) => {
    * @param {any} ws
    */
   const handleAuth = ws => {
-    // const url = new URL(request.url, 'wss://ws.poemhub.top')
-    if (request.url !== '/healthz') {
-      // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
-      // const token = url.searchParams.get('access_token')
-      try {
-        // jwt.verify(token, JWT_SIGN_KEY)
-        wss.emit('connection', ws, request)
-      } catch (err) {
-        console.error('error:' + err)
-      }
-    }
+    wss.emit('connection', ws, request)
   }
   wss.handleUpgrade(request, socket, head, handleAuth)
 })

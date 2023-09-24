@@ -20,7 +20,6 @@ export const messageSync = 0
 export const messageQueryAwareness = 3
 export const messageAwareness = 1
 export const messageAuth = 2
-export const WEBSOCKET_AUTH_FAILED = 4000
 
 /**
  *                       encoder,          decoder,          provider,          emitSynced, messageType
@@ -169,10 +168,18 @@ const setupWS = (provider) => {
       }
 
       // Do not reconnect if auth failed
-      if (event.code === WEBSOCKET_AUTH_FAILED) {
+      if (event.code === 4000) {
         console.log('Auth failed', event.code)
         provider.emit('auth', [{
           status: 'failed'
+        }])
+        return
+      }
+
+      if (event.code === 4001) {
+        console.log('Auth failed expire', event.code)
+        provider.emit('auth', [{
+          status: 'expired'
         }])
         return
       }

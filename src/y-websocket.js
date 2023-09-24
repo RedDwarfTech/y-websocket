@@ -20,6 +20,7 @@ export const messageSync = 0
 export const messageQueryAwareness = 3
 export const messageAwareness = 1
 export const messageAuth = 2
+export const WEBSOCKET_AUTH_FAILED = 4000
 
 /**
  *                       encoder,          decoder,          provider,          emitSynced, messageType
@@ -166,6 +167,16 @@ const setupWS = (provider) => {
       } else {
         provider.wsUnsuccessfulReconnects++
       }
+
+      // Do not reconnect if auth failed
+      if (event.code === WEBSOCKET_AUTH_FAILED) {
+        console.log('Auth failed', event.code)
+        provider.emit('auth', [{
+          status: 'failed'
+        }])
+        return
+      }
+
       // Start with no reconnect timeout and increase timeout by
       // using exponential backoff starting with 100ms
       setTimeout(

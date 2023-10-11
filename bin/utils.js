@@ -7,7 +7,9 @@ const decoding = require('lib0/dist/decoding.cjs')
 const map = require('lib0/dist/map.cjs')
 const debounce = require('lodash.debounce')
 const jwt = require('jsonwebtoken')
-
+var log4js = require('log4js')
+var logger = log4js.getLogger()
+logger.level = 'warn'
 const callbackHandler = require('./callback.js').callbackHandler
 const isCallbackSet = require('./callback.js').isCallbackSet
 const rdfile = require('./rd_file.js')
@@ -247,11 +249,11 @@ const handleAuth = (request, conn) => {
     } catch (err) {
       switch (err.name) {
         case 'TokenExpiredError':
-          console.error('expire:' + err)
+          logger.warn('token expired:' + err)
           conn.close(WEBSOCKET_AUTH_TOKEN_EXPIRE)
           break
         case 'JsonWebTokenError':
-          console.error('error:' + err)
+          logger.error('json web token facing error:' + err)
           conn.close(WEBSOCKET_AUTH_FAILED)
           break
       }

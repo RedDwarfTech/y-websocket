@@ -26,6 +26,9 @@ const server = http.createServer((request, response) => {
     memorySnapshot()
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('okay')
+  } else if (request.url === '/metrics') {
+    response.writeHead(200, { 'Content-Type': 'text/plain' })
+    response.end(register.metrics())
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('okay')

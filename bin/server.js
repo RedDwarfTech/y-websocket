@@ -12,6 +12,12 @@ const setupWSConnection = require('./utils.js').setupWSConnection
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234
 
+const client = require('prom-client')
+const collectDefaultMetrics = client.collectDefaultMetrics
+const Registry = client.Registry
+const register = new Registry()
+collectDefaultMetrics({ register })
+
 const server = http.createServer((request, response) => {
   if (request.url === '/healthz') {
     response.writeHead(200, { 'Content-Type': 'text/plain' })

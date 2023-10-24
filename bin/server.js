@@ -28,7 +28,13 @@ const server = http.createServer((request, response) => {
     response.end('okay')
   } else if (request.url === '/metrics') {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
-    response.end(client.register.metrics())
+    try {
+      let metrics = client.register.metrics()
+      response.end(metrics)
+    } catch (e) {
+      console.error('get metrics error', e)
+    }
+    response.end('metrics default')
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('not match')

@@ -18,7 +18,7 @@ const Registry = client.Registry
 const register = new Registry()
 collectDefaultMetrics({ register })
 
-const server = http.createServer((request, response) => {
+const server = http.createServer(async (request, response) => {
   if (request.url === '/healthz') {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('ok')
@@ -29,8 +29,10 @@ const server = http.createServer((request, response) => {
   } else if (request.url === '/metrics') {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     try {
-      let metrics = client.register.metrics()
-      response.end(metrics)
+      let metricsPromise = client.register.metrics()
+      const metricsString = await metricsPromise
+      const metricsBuffer = Buffer.from(metricsString)
+      response.end(metricsBuffer)
     } catch (e) {
       console.error('get metrics error', e)
     }

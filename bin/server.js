@@ -14,9 +14,7 @@ const port = process.env.PORT || 1234
 
 const client = require('prom-client')
 const collectDefaultMetrics = client.collectDefaultMetrics
-const Registry = client.Registry
-const register = new Registry()
-collectDefaultMetrics({ register })
+collectDefaultMetrics({ gcDurationBuckets: [0.1, 0.2, 0.3] })
 
 const server = http.createServer(async (request, response) => {
   if (request.url === '/healthz') {
@@ -35,8 +33,8 @@ const server = http.createServer(async (request, response) => {
       response.end(metricsBuffer)
     } catch (e) {
       console.error('get metrics error', e)
+      response.end('metrics default')
     }
-    response.end('metrics default')
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('not match')

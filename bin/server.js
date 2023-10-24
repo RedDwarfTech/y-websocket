@@ -28,7 +28,7 @@ const server = http.createServer((request, response) => {
     response.end('okay')
   } else if (request.url === '/metrics') {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
-    response.end(register.metrics())
+    response.end(client.register.metrics())
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('not match')

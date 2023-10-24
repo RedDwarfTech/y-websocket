@@ -31,7 +31,7 @@ const server = http.createServer((request, response) => {
     response.end(register.metrics())
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
-    response.end('okay')
+    response.end('not match')
   }
 })
 

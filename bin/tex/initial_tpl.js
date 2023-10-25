@@ -1,7 +1,7 @@
 const Y = require('yjs')
 const { WebsocketProvider } = require('y-websocket')
 
-export const initTpl = (docId, projectId, initContext) => {
+exports.initTpl = (docId, projectId, initContext) => {
   let docOpt = {
     guid: docId,
     collectionid: projectId

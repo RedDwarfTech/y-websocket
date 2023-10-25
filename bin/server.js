@@ -12,7 +12,6 @@ const setupWSConnection = require('./utils.js').setupWSConnection
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234
 const initTpl = require('./tex/initial_tpl.js').initTpl
-const bodyParser = require('body-parser')
 const client = require('prom-client')
 const collectDefaultMetrics = client.collectDefaultMetrics
 collectDefaultMetrics({ gcDurationBuckets: [0.1, 0.2, 0.3] })
@@ -37,14 +36,19 @@ const server = http.createServer(async (request, response) => {
       response.end('metrics default')
     }
   } else if (request.url === '/y-websocket/file/initial') {
-    bodyParser.urlencoded({ extended: true })(request, response, () => {
-      const requestBody = request.body
-      const docId = requestBody.doc_id
-      const projectId = requestBody.project_id
-      const initContext = requestBody.file_content
-      initTpl(docId, projectId, initContext)
+    let body = ''
+    request.on('data', (chunk) => {
+      body += chunk.toString()
     })
-    response.end('success')
+    request.on('end', () => {
+      const params = JSON.parse(body)
+      console.log(params)
+      const docId = params.doc_id
+      const projectId = params.project_id
+      const initContext = params.file_content
+      initTpl(docId, projectId, initContext)
+      response.end('success')
+    })
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('not match')

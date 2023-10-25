@@ -18,6 +18,8 @@ const collectDefaultMetrics = client.collectDefaultMetrics
 collectDefaultMetrics({ gcDurationBuckets: [0.1, 0.2, 0.3] })
 
 const server = http.createServer(async (request, response) => {
+  const regex = /^\/doc\?docId=(\d+)$/
+  const match = request.url.match(regex)
   if (request.url === '/healthz') {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('ok')
@@ -49,7 +51,7 @@ const server = http.createServer(async (request, response) => {
       initTpl(docId, projectId, initContext)
       response.end('success')
     })
-  } else if (request.url === '/doc') {
+  } else if (match) {
     let doc = ''
     let params = null
     try {

@@ -50,10 +50,16 @@ const server = http.createServer(async (request, response) => {
       response.end('success')
     })
   } else if (request.url === '/doc') {
-    const url = new URL(request.url, `http://${request.headers.host}`)
-    const params = url.searchParams
-    const docId = params.get('docId')
-    const doc = getLdbDoc(docId)
+    let doc = ''
+    let params = null
+    try {
+      const url = new URL(request.url, `http://${request.headers.host}`)
+      params = url.searchParams
+      const docId = params.get('docId')
+      doc = getLdbDoc(docId)
+    } catch (e) {
+      console.error(e + ',params:' + JSON.stringify(params))
+    }
     response.end(doc)
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })

@@ -12,6 +12,7 @@ const setupWSConnection = require('./utils.js').setupWSConnection
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234
 const initTpl = require('./tex/initial_tpl.js').initTpl
+const getLdbDoc = require('./doc/doc_controller.js').getLdbDoc
 const client = require('prom-client')
 const collectDefaultMetrics = client.collectDefaultMetrics
 collectDefaultMetrics({ gcDurationBuckets: [0.1, 0.2, 0.3] })
@@ -48,6 +49,12 @@ const server = http.createServer(async (request, response) => {
       initTpl(docId, projectId, initContext)
       response.end('success')
     })
+  } else if (request.url === '/doc') {
+    const url = new URL(request.url, `http://${request.headers.host}`)
+    const params = url.searchParams
+    const docId = params.get('docId')
+    const doc = getLdbDoc(docId)
+    response.end(doc)
   } else {
     response.writeHead(200, { 'Content-Type': 'text/plain' })
     response.end('not match')

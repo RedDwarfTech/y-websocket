@@ -42,7 +42,6 @@ const server = http.createServer(async (request, response) => {
     })
     request.on('end', () => {
       const params = JSON.parse(body)
-      console.log(params)
       const docId = params.doc_id
       const projectId = params.project_id
       const initContext = params.file_content

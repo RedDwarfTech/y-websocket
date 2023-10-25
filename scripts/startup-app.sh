@@ -7,6 +7,5 @@ export YPERSISTENCE=/opt/data/yjs-storage
 
 # https://stackoverflow.com/questions/77357320/is-it-possible-to-change-the-node-heap-size
 nohup node --max-old-space-size=256 --inspect ./bin/server.js >> ws.log 2>&1 &
-nohup node --inspect=0.0.0.0:9229 ./bin/http_server.js >> http.log 2>&1 &
 
 tail -f ws.log

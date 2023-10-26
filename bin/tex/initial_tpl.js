@@ -8,7 +8,7 @@ exports.initTpl = (docId, projectId, initContext) => {
   }
   const ydoc = new Y.Doc(docOpt)
   const ytext = ydoc.getText(docId)
-  const wsProvider = new WebsocketProvider('ws://localhost:1234/y-websocket/file/initial', docId, ydoc, { WebSocketPolyfill: require('ws') })
+  const wsProvider = new WebsocketProvider('ws://localhost:1234', docId, ydoc, { WebSocketPolyfill: require('ws') })
   wsProvider.on('status', (event) => {
     if (event.status === 'connected') {
       console.log('connected')

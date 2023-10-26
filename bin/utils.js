@@ -241,7 +241,7 @@ const pingTimeout = 30000
 
 const handleAuth = (request, conn) => {
   const url = new URL(request.url, 'wss://ws.poemhub.top')
-  if (request.url !== '/healthz' && !request.url.startsWith('/y-websocket/file/initial')) {
+  if (request.url !== '/healthz') {
     // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
     const token = url.searchParams.get('access_token')
     try {

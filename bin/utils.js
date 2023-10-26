@@ -249,11 +249,11 @@ const handleAuth = (request, conn) => {
     } catch (err) {
       switch (err.name) {
         case 'TokenExpiredError':
-          logger.warn('token expired:' + err + ', request url:' + request.url + ",token:" + token)
+          logger.warn('token expired:' + err + ', request url:' + request.url + ',token:' + token)
           conn.close(WEBSOCKET_AUTH_TOKEN_EXPIRE)
           break
         case 'JsonWebTokenError':
-          logger.error('json web token facing error:' + err + ', request url:' + request.url + ",token:" + token)
+          logger.error('json web token facing error:' + err + ', request url:' + request.url + ',token:' + token)
           conn.close(WEBSOCKET_AUTH_FAILED)
           break
       }

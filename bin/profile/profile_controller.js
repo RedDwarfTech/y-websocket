@@ -16,7 +16,8 @@ router.get('/dump', (req, res) => {
 
 router.get('/heap', (req, res) => {
   const heap = process.memoryUsage().heapTotal
-  res.send(heap)
+  const heapInMB = (heap / 1024 / 1024).toFixed(2)
+  res.send(heapInMB.toString() + 'MB')
 })
 
 module.exports = router

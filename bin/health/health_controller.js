@@ -1,5 +1,8 @@
-const app = require('../common/tex_express.js').app
+const express = require('express')
+const router = express.Router()
 
-app.get('/healthz', (req, res) => {
+router.get('/healthz', (req, res) => {
   res.send('ok')
 })
+
+module.exports = router

@@ -15,6 +15,7 @@ const docRoute = require('./doc/doc_controller.js')
 const profileRoute = require('./profile/profile_controller.js')
 const metricsRoute = require('./profile/metrics_controller.js')
 const server = http.createServer(app)
+const express = require('express')
 
 wss.on('connection', setupWSConnection)
 server.on('upgrade', (request, socket, head) => {
@@ -29,6 +30,7 @@ server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, handleAuth)
 })
 
+app.use(express.json())
 app.use('/health', healthRoute)
 app.use('/doc', docRoute)
 app.use('/profile', profileRoute)

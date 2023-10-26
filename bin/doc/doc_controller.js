@@ -1,7 +1,7 @@
 const persistenceDir = process.env.YPERSISTENCE
 const express = require('express')
 const router = express.Router()
-const initTpl = require('./tex/initial_tpl.js').initTpl
+const initTpl = require('../tex/initial_tpl.js').initTpl
 
 router.get('/', async (req, res) => {
   const docId = req.params.docId

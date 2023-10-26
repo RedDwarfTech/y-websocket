@@ -8,7 +8,6 @@ exports.initTpl = (docId, projectId, initContext) => {
   }
   const ydoc = new Y.Doc(docOpt)
   const ytext = ydoc.getText(docId)
-  console.log('init context:' + initContext)
   const wsProvider = new WebsocketProvider('ws://localhost:1234/y-websocket/file/initial', docId, ydoc, { WebSocketPolyfill: require('ws') })
   wsProvider.on('status', (event) => {
     if (event.status === 'connected') {
@@ -16,6 +15,7 @@ exports.initTpl = (docId, projectId, initContext) => {
       if (wsProvider.ws) {
         console.log('ws')
         if (initContext && initContext.length > 0) {
+          console.log('insert:')
           ytext.insert(0, initContext)
         }
       }

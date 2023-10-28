@@ -192,7 +192,7 @@ const messageListener = (conn, doc, message) => {
       }
     }
   } catch (err) {
-    console.error(err)
+    logger.error('message listener error,' + err)
     doc.emit('error', [err])
   }
 }
@@ -233,6 +233,7 @@ const send = (doc, conn, m) => {
   try {
     conn.send(m, /** @param {any} err */ err => { err != null && closeConn(doc, conn) })
   } catch (e) {
+    logger.error('send message facing error,' + e)
     closeConn(doc, conn)
   }
 }
@@ -280,6 +281,7 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
   const pingInterval = setInterval(() => {
     if (!pongReceived) {
       if (doc.conns.has(conn)) {
+        logger.warn('close connection pong, pong:' + pongReceived)
         closeConn(doc, conn)
       }
       clearInterval(pingInterval)
@@ -288,6 +290,7 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
       try {
         conn.ping()
       } catch (e) {
+        logger.error('close connection when ping,' + e)
         closeConn(doc, conn)
         clearInterval(pingInterval)
       }

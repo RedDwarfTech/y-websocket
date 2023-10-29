@@ -149,7 +149,6 @@ const setupWS = (provider) => {
         const update = Y.decodeUpdateV2(data.subarray(1))
         console.log('update:' + update)
       }
-      
       provider.wsLastMessageReceived = time.getUnixTime()
       const encoder = readMessage(provider, new Uint8Array(event.data), true)
       if (encoding.length(encoder) > 1) {

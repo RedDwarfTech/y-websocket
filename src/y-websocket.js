@@ -136,7 +136,8 @@ const setupWS = (provider) => {
     provider.synced = false
 
     websocket.onmessage = (event) => {
-      const ss = Y.decodeSnapshot(event.data)
+      const data = new Uint8Array(event.data);
+      const ss = Y.decodeSnapshot(data)
       console.warn('get decode msg:' + ss)
       console.warn('get event data:' + event.data)
       provider.wsLastMessageReceived = time.getUnixTime()

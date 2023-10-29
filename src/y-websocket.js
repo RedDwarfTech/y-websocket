@@ -137,12 +137,19 @@ const setupWS = (provider) => {
 
     websocket.onmessage = (event) => {
       const data = new Uint8Array(event.data)
-      const ss = Y.decodeSnapshot(data)
-      const decoder = decoding.createDecoder(data)
-      const messageType = decoding.readVarUint(decoder)
-      console.warn('add message type:' + messageType)
-      console.warn('get decode msg:' + ss)
-      console.warn('get event data:' + event.data)
+
+      // 解码快照数据
+      if (data[0] === 0) {
+        const snapshot = Y.decodeSnapshot(data.subarray(1))
+        console.log('snapshot:' + snapshot)
+      }
+
+      // 解码更新数据
+      if (data[0] === 1) {
+        const update = Y.decodeUpdateV2(data.subarray(1))
+        console.log('update:' + update)
+      }
+      
       provider.wsLastMessageReceived = time.getUnixTime()
       const encoder = readMessage(provider, new Uint8Array(event.data), true)
       if (encoding.length(encoder) > 1) {

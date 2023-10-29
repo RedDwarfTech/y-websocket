@@ -136,24 +136,12 @@ const setupWS = (provider) => {
     provider.synced = false
 
     websocket.onmessage = (event) => {
-      const data = new Uint8Array(event.data)
-
-      // 解码快照数据
-      if (data[0] === 0) {
-        const snapshot = Y.decodeSnapshot(data.subarray(1))
-        console.log('snapshot:' + snapshot)
-      }
-
-      // 解码更新数据
-      if (data[0] === 1) {
-        const update = Y.decodeUpdateV2(data.subarray(1))
-        console.log('update:' + update)
-      }
       provider.wsLastMessageReceived = time.getUnixTime()
       const encoder = readMessage(provider, new Uint8Array(event.data), true)
       if (encoding.length(encoder) > 1) {
         websocket.send(encoding.toUint8Array(encoder))
       }
+      provider.emit('message', [event, provider])
     }
     websocket.onerror = (event) => {
       provider.emit('connection-error', [event, provider])

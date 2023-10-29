@@ -146,10 +146,6 @@ const setupWS = (provider) => {
     websocket.onerror = (event) => {
       provider.emit('connection-error', [event, provider])
     }
-    // @ts-ignore
-    websocket.onping = (data) => {
-      console.log('Received ping:', data)
-    }
     websocket.onclose = (event) => {
       provider.emit('connection-close', [event, provider])
       provider.ws = null

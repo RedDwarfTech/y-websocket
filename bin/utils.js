@@ -240,6 +240,10 @@ const send = (doc, conn, m) => {
 
 const pingTimeout = 30000
 
+/**
+* @param {WebSocket} conn
+* @param {IncomingMessage} request
+*/
 const handleAuth = (request, conn) => {
   const url = new URL(request.url, 'wss://ws.poemhub.top')
   if (request.url !== '/healthz') {
@@ -263,8 +267,8 @@ const handleAuth = (request, conn) => {
 }
 
 /**
- * @param {any} conn
- * @param {any} req
+ * @param {WebSocket} conn
+ * @param {IncomingMessage} req
  * @param {any} opts
  */
 exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[0], gc = true } = {}) => {

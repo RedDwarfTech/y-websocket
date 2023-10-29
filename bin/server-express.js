@@ -22,9 +22,9 @@ server.on('upgrade', (request, socket, head) => {
   // You may check auth of request here..
   // See https://github.com/websockets/ws#client-authentication
   /**
-   * @param {any} ws
+   * @param {WebSocket} ws
    */
-  const handleAuth = ws => {
+  const handleAuth = (ws) => {
     wss.emit('connection', ws, request)
   }
   wss.handleUpgrade(request, socket, head, handleAuth)

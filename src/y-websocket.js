@@ -138,7 +138,7 @@ const setupWS = (provider) => {
     websocket.onmessage = (event) => {
       const data = new Uint8Array(event.data)
       const ss = Y.decodeSnapshot(data)
-      const decoder = decoding.createDecoder(event.data)
+      const decoder = decoding.createDecoder(data)
       const messageType = decoding.readVarUint(decoder)
       console.warn('add message type:' + messageType)
       console.warn('get decode msg:' + ss)

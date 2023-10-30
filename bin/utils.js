@@ -223,7 +223,7 @@ const closeConn = (doc, conn) => {
 
 /**
  * @param {WSSharedDoc} doc
- * @param {any} conn
+* @param {WebSocket} conn
  * @param {Uint8Array} m
  */
 const send = (doc, conn, m) => {
@@ -305,6 +305,7 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     clearInterval(pingInterval)
   })
   conn.on('pong', () => {
+    logger.warn('recieved pong message')
     pongReceived = true
   })
   // put the following in a variables in a block so the interval handlers don't keep in in

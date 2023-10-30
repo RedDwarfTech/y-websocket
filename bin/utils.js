@@ -284,17 +284,17 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
   const pingInterval = setInterval(() => {
     if (!pongReceived) {
       if (doc.conns.has(conn)) {
-        logger.warn('close connection pong, pong:' + pongReceived)
+        logger.warn('close connection pong, pong:' + pongReceived + ',docName:' + docName)
         closeConn(doc, conn)
       }
       clearInterval(pingInterval)
     } else if (doc.conns.has(conn)) {
       pongReceived = false
       try {
-        logger.warn('send ping message...')
+        logger.warn('send ping message...,docName:' + docName)
         conn.ping()
       } catch (e) {
-        logger.error('close connection when ping,' + e)
+        logger.error('close connection when ping,' + e + ',docName:' + docName)
         closeConn(doc, conn)
         clearInterval(pingInterval)
       }

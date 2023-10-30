@@ -279,7 +279,6 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
   doc.conns.set(conn, new Set())
   // listen and reply to events
   conn.on('message', /** @param {ArrayBuffer} message */ message => messageListener(conn, doc, new Uint8Array(message)))
-
   // Check if connection is still alive
   let pongReceived = true
   const pingInterval = setInterval(() => {
@@ -292,6 +291,7 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     } else if (doc.conns.has(conn)) {
       pongReceived = false
       try {
+        logger.warn('send ping message...')
         conn.ping()
       } catch (e) {
         logger.error('close connection when ping,' + e)

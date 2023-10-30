@@ -305,7 +305,7 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     clearInterval(pingInterval)
   })
   conn.on('pong', () => {
-    logger.warn('recieved pong message')
+    logger.warn('recieved pong message, docName: ' + docName)
     pongReceived = true
   })
   // put the following in a variables in a block so the interval handlers don't keep in in

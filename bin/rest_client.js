@@ -1,4 +1,31 @@
 const http = require('http')
+var log4js = require('log4js')
+var logger = log4js.getLogger()
+logger.level = 'warn'
+
+const flushIndex = (fileId, content) => {
+  const baseUrl = 'http://tex-service.reddwarf-pro.svc.cluster.local:8000'
+  const url = `${baseUrl}/tex/project/flush/idx`
+  let req = {
+    file_id: fileId,
+    content: content
+  }
+  const requestData = JSON.stringify(req)
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(requestData)
+    }
+  }
+  const request = http.request(url, options, (response) => {
+  })
+  request.on('error', (error) => {
+    logger.error('send idx file info error' + error)
+  })
+  request.write(requestData)
+  request.end()
+}
 
 const getFileJsonData = (fileId) => {
   return new Promise((resolve, reject) => {
@@ -14,13 +41,16 @@ const getFileJsonData = (fileId) => {
           const json = JSON.parse(data)
           resolve(json)
         } catch (e) {
-          console.error('parse json failed' + e + ',data:' + data)
+          logger.error('parse json failed' + e + ',data:' + data)
         }
       })
     }).on('promise error', (error) => {
-      console.error('get file info error' + error)
+      logger.error('get file info error' + error)
       reject(error)
     })
   })
 }
-exports.getFileJsonData = getFileJsonData
+module.exports = {
+  getFileJsonData,
+  flushIndex
+}

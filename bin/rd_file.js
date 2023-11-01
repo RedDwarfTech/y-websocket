@@ -2,10 +2,22 @@ const getFileJsonData = require('./rest_client.js').getFileJsonData
 const fs = require('fs')
 const lodash = require('lodash')
 const path = require('path')
+var log4js = require('log4js')
+var logger = log4js.getLogger()
+logger.level = 'warn'
+const flushIndex = require('./rest_client.js').flushIndex
 
 const throttledFn = lodash.throttle((docName, ldb) => {
   handleFileSync(docName, ldb)
 }, 2000)
+
+const flushFulltextIndex = (docName, content) => {
+  try {
+    flushIndex(docName, content)
+  } catch (err) {
+    logger.error('Failed flush full text index', err, docName)
+  }
+}
 
 const handleFileSync = async (docName, ldb) => {
   try {
@@ -16,7 +28,7 @@ const handleFileSync = async (docName, ldb) => {
     }
     let fileContent = await getFileJsonData(docName)
     if (!fileContent) {
-      console.error(`get file info failed，file info: ${fileContent},docName:${docName}`)
+      logger.error(`get file info failed，file info: ${fileContent},docName:${docName}`)
       return
     }
     let projectId = fileContent.result.project_id
@@ -28,16 +40,17 @@ const handleFileSync = async (docName, ldb) => {
     let folderPath = path.join(`/opt/data/project/${year}/${month}/${projectId}`, filePath)
     fs.mkdir(folderPath, { recursive: true }, (error) => {
       if (error) {
-        console.error('craete directory failed,', error)
+        logger.error('craete directory failed,', error)
       }
     })
     fs.writeFile(path.join(folderPath, fileName), text.toString(), (err) => {
       if (err) {
-        console.error('Failed to write file:', err)
+        logger.error('Failed to write file:', err)
       }
     })
+    flushFulltextIndex(docName, text.toString())
   } catch (err) {
-    console.error('Failed to sync file to disk', err)
+    logger.error('Failed to sync file to disk', err)
   }
 }
 module.exports = {

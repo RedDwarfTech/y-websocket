@@ -291,7 +291,6 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     } else if (doc.conns.has(conn)) {
       pongReceived = false
       try {
-        logger.warn('send ping message...,docName:' + docName)
         conn.ping()
       } catch (e) {
         logger.error('close connection when ping,' + e + ',docName:' + docName)
@@ -305,7 +304,6 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     clearInterval(pingInterval)
   })
   conn.on('pong', () => {
-    logger.warn('recieved pong message, docName: ' + docName)
     pongReceived = true
   })
   // put the following in a variables in a block so the interval handlers don't keep in in

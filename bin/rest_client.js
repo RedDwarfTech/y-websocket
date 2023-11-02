@@ -19,7 +19,14 @@ const flushIndex = (fileId, content) => {
     }
   }
   const request = http.request(url, options, (response) => {
-    logger.warn('request response: ' + JSON.stringify(response))
+    let body = ''
+    response.setEncoding('utf8')
+    response.on('data', (chunk) => {
+      body += chunk
+    })
+    response.on('end', () => {
+      logger.warn('request response: ' + body)
+    })
   })
   request.on('error', (error) => {
     logger.error('send idx file info error' + error)

@@ -40,13 +40,16 @@ const handleFileSync = async (docName, ldb) => {
         logger.error('Failed to write file:', err)
       }
     })
+    let ct = fileContent.result.created_time
+    let ut = fileContent.result.updated_time
+    let fid = fileContent.result.file_id
     let file = {
       name: fileName,
-      created_time: fileContent.result.created_time,
-      updated_time: fileContent.result.updated_time,
+      created_time: ct,
+      updated_time: ut,
       content: text.toString(),
       project_id: projectId,
-      file_id: fileContent.result.file_id
+      file_id: fid
     }
     updateFullsearch(file)
   } catch (err) {

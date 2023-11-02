@@ -65,6 +65,7 @@
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "log4js": "^6.9.1",
+    "meilisearch": "^0.35.0",
     "prom-client": "^14.2.0",
     "prometheus-api-metrics": "^3.2.2",
     "y-protocols": "^1.0.5",

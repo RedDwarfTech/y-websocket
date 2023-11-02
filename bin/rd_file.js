@@ -5,19 +5,11 @@ const path = require('path')
 var log4js = require('log4js')
 var logger = log4js.getLogger()
 logger.level = 'warn'
-const flushIndex = require('./rest_client.js').flushIndex
+const updateFullsearch = require('./tex/fulltext_search.js').updateFullsearch
 
 const throttledFn = lodash.throttle((docName, ldb) => {
   handleFileSync(docName, ldb)
 }, 2000)
-
-const flushFulltextIndex = (docName, content) => {
-  try {
-    flushIndex(docName, content)
-  } catch (err) {
-    logger.error('Failed flush full text index', err, docName)
-  }
-}
 
 const handleFileSync = async (docName, ldb) => {
   try {
@@ -48,7 +40,7 @@ const handleFileSync = async (docName, ldb) => {
         logger.error('Failed to write file:', err)
       }
     })
-    flushFulltextIndex(docName, text.toString())
+    updateFullsearch(docName, text.toString())
   } catch (err) {
     logger.error('Failed to sync file to disk', err)
   }

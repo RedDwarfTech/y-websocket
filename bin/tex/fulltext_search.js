@@ -10,7 +10,7 @@ const updateFullsearch = async (file) => {
       host: 'http://meilisearch.reddwarf-toolbox.svc.cluster.local:7700',
       apiKey: masterKey
     })
-    client.index('movies').addDocuments([file])
+    client.index('files').addDocuments([file])
       .then((res) => logger.warn(res))
   } catch (err) {
     logger.error('Failed to sync file index', err)

@@ -45,6 +45,7 @@ const handleFileSync = async (docName, ldb) => {
       created_time: fileContent.result.created_time,
       updated_time: fileContent.result.updated_time,
       content: text.toString(),
+      project_id: projectId,
       file_id: fileContent.result.file_id
     }
     updateFullsearch(file)

@@ -49,7 +49,8 @@ const handleFileSync = async (docName, ldb) => {
       updated_time: ut,
       content: text.toString(),
       project_id: projectId,
-      file_id: fid
+      file_id: fid,
+      file_path: filePath
     }
     updateFullsearch(file)
   } catch (err) {

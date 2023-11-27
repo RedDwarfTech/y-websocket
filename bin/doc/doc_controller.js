@@ -12,6 +12,9 @@ router.get('/', async (req, res) => {
   res.send(text)
 })
 
+/**
+ * https://discuss.yjs.dev/t/is-it-possible-to-using-http-to-do-some-initial-job/2108/1
+ */
 router.post('/initial', async (req, res) => {
   const docId = req.body.doc_id
   const projectId = req.body.project_id

@@ -13,6 +13,9 @@ const throttledFn = lodash.throttle((docName, ldb) => {
 
 const handleFileSync = async (docName, ldb) => {
   try {
+    /**
+     * https://discuss.yjs.dev/t/how-to-get-the-document-text-the-decode-content-not-binary-content-in-y-websocket/2033/1
+     */
     const persistedYdoc = await ldb.getYDoc(docName)
     let text = persistedYdoc.getText(docName)
     if (!text || !text.toString()) {

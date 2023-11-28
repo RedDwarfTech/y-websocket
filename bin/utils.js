@@ -202,7 +202,9 @@ const messageListener = (conn, doc, message) => {
  * @param {any} conn
  */
 const closeConn = (doc, conn) => {
+  logger.warn('trigger close connection function' + doc.name)
   if (doc.conns.has(conn)) {
+    logger.warn('close the active connection' + doc.name)
     /**
      * @type {Set<number>}
      */

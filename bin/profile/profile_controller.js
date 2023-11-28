@@ -5,7 +5,7 @@ const v8 = require('v8')
 
 router.get('/dump', (req, res) => {
   const snapshotStream = v8.getHeapSnapshot()
-  const now = Date.now()
+  const now = new Date()
   const fileAttri = `${now.toISOString().slice(0, 19).replace('T', '_').replace(/:/g, '-')}`
   // It's important that the filename end with `.heapsnapshot`,
   // otherwise Chrome DevTools won't open it.

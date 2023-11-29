@@ -73,7 +73,7 @@ exports.getPersistence = () => persistence
 /**
  * @type {Map<string,WSSharedDoc>}
  */
-const docs = new WeakMap()
+const docs = new Map()
 // exporting docs so that others can use it
 exports.docs = docs
 
@@ -218,6 +218,7 @@ const closeConn = (doc, conn) => {
         doc = doc.destroy()
       })
       docs.delete(doc.name)
+      doc.name = null
     }
   }
   conn.close()

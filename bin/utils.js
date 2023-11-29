@@ -105,7 +105,7 @@ class WSSharedDoc extends Y.Doc {
      * Maps from conn to set of controlled user ids. Delete all user ids from awareness when this conn is closed
      * @type {Map<Object, Set<number>>}
      */
-    this.conns = new Map()
+    this.conns = new WeakMap()
     /**
      * @type {awarenessProtocol.Awareness}
      */

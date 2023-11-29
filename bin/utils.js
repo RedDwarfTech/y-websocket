@@ -73,7 +73,7 @@ exports.getPersistence = () => persistence
 /**
  * @type {Map<string,WSSharedDoc>}
  */
-const docs = new Map()
+const docs = new WeakMap()
 // exporting docs so that others can use it
 exports.docs = docs
 
@@ -213,12 +213,11 @@ const closeConn = (doc, conn) => {
     doc.conns.delete(conn)
     awarenessProtocol.removeAwarenessStates(doc.awareness, Array.from(controlledIds), null)
     if (doc.conns.size === 0 && persistence !== null) {
-      let docName = doc.name
       // if persisted, we store state and destroy ydocument
       persistence.writeState(doc.name, doc).then(() => {
-        doc = null
+        doc = doc.destroy()
       })
-      docs.delete(docName)
+      docs.delete(doc.name)
     }
   }
   conn.close()

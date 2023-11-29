@@ -4,7 +4,7 @@ const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
 
 const encoding = require('lib0/dist/encoding.cjs')
 const decoding = require('lib0/dist/decoding.cjs')
-const map = require('lib0/dist/map.cjs')
+const mapWrapper = require('lib0/dist/map.cjs')
 const debounce = require('lodash.debounce')
 const jwt = require('jsonwebtoken')
 var log4js = require('log4js')
@@ -152,7 +152,7 @@ class WSSharedDoc extends Y.Doc {
  * @param {boolean} gc - whether to allow gc on the doc (applies only when created)
  * @return {WSSharedDoc}
  */
-const getYDoc = (docname, gc = true) => map.setIfUndefined(docs, docname, () => {
+const getYDoc = (docname, gc = true) => mapWrapper.setIfUndefined(docs, docname, () => {
   const doc = new WSSharedDoc(docname)
   doc.gc = gc
   if (persistence !== null) {
@@ -276,7 +276,7 @@ const handleAuth = (request, conn) => {
  * @param {any} opts
  */
 exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[0], gc = true } = {}) => {
-  handleAuth(req, conn)
+  // handleAuth(req, conn)
   conn.binaryType = 'arraybuffer'
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docName, gc)

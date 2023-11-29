@@ -276,7 +276,7 @@ const handleAuth = (request, conn) => {
  * @param {any} opts
  */
 exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[0], gc = true } = {}) => {
-  // handleAuth(req, conn)
+  handleAuth(req, conn)
   conn.binaryType = 'arraybuffer'
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docName, gc)

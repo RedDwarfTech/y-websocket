@@ -235,10 +235,7 @@ const send = (doc, conn, m) => {
     closeConn(doc, conn)
   }
   try {
-    conn.send(m, /** @param {any} err */ err => {
-      logger.error('send data facing error', err)
-      err != null && closeConn(doc, conn)
-    })
+    conn.send(m)
   } catch (e) {
     logger.error('send message facing error,' + e)
     closeConn(doc, conn)

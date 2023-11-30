@@ -14,7 +14,7 @@ const updateFullsearch = async (file) => {
       apiKey: masterKey
     })
     client.index('files').addDocuments([file], option)
-      .then((res) => logger.warn(res + ',file:' + JSON.stringify(file)))
+      .then((res) => {})
   } catch (err) {
     logger.error('Failed to sync file index', err)
   }

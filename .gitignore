@@ -6,3 +6,4 @@ tmp
 *.log
 .fleet
 .package-lock.json
+.env

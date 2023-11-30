@@ -235,7 +235,10 @@ const send = (doc, conn, m) => {
     closeConn(doc, conn)
   }
   try {
-    conn.send(m, /** @param {any} err */ err => { err != null && closeConn(doc, conn) })
+    conn.send(m, /** @param {any} err */ err => {
+      logger.error('send data facing error', err)
+      err != null && closeConn(doc, conn)
+    })
   } catch (e) {
     logger.error('send message facing error,' + e)
     closeConn(doc, conn)
@@ -303,7 +306,8 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
       }
     }
   }, pingTimeout)
-  conn.on('close', () => {
+  conn.on('close', (e) => {
+    logger.warn('trigger close event', e)
     closeConn(doc, conn)
     clearInterval(pingInterval)
   })

@@ -283,11 +283,9 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     logger.warn('start the c8302e460baf4639abf8a0291809d531 websocket connection....')
   }
   const doc = getYDoc(docName, gc)
-  if (docName === 'c8302e460baf4639abf8a0291809d531') {
-    const length = Y.encodeStateAsUpdate(doc).length
-    const text = doc.getText()
-    logger.warn('the doc length is ' + length + ', text:' + text)
-  }
+  const length = Y.encodeStateAsUpdate(doc).length
+  const text = doc.getText()
+  logger.warn('the doc length is ' + length + ', text:' + text)
   doc.conns.set(conn, new Set())
   // listen and reply to events
   conn.on('message', /** @param {ArrayBuffer} message */ message => messageListener(conn, doc, new Uint8Array(message)))

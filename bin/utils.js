@@ -318,6 +318,9 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     clearInterval(pingInterval)
   })
   conn.on('pong', () => {
+    if (docName === 'c8302e460baf4639abf8a0291809d531') {
+      logger.warn('ping recived c8302e460baf4639abf8a0291809d531 pong')
+    }
     pongReceived = true
   })
   // put the following in a variables in a block so the interval handlers don't keep in in

@@ -285,7 +285,8 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
   const doc = getYDoc(docName, gc)
   if (docName === 'c8302e460baf4639abf8a0291809d531') {
     const length = Y.encodeStateAsUpdate(doc).length
-    logger.warn('the doc length is ' + length)
+    const text = doc.getText()
+    logger.warn('the doc length is ' + length + ', text:' + text)
   }
   doc.conns.set(conn, new Set())
   // listen and reply to events

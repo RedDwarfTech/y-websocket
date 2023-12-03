@@ -242,7 +242,7 @@ const send = (doc, conn, m) => {
   }
 }
 
-const pingTimeout = 30000
+const pingTimeout = 20000
 
 /**
 * @param {WebSocket} conn

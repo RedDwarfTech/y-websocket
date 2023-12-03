@@ -279,19 +279,14 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
   handleAuth(req, conn)
   conn.binaryType = 'arraybuffer'
   // get doc, initialize if it does not exist yet
-  if (docName === 'c8302e460baf4639abf8a0291809d531') {
-    logger.warn('start the c8302e460baf4639abf8a0291809d531 websocket connection....')
-  }
   const doc = getYDoc(docName, gc)
   const length = Y.encodeStateAsUpdate(doc).length
-  const text = doc.getText()
-  logger.warn('the doc length is ' + length + ', text:' + text)
+  if (length <= 2) {
+    logger.warn('the doc ' + docName + ' length is  ' + length + ', seems like empty')
+  }
   doc.conns.set(conn, new Set())
   // listen and reply to events
   conn.on('message', /** @param {ArrayBuffer} message */ message => messageListener(conn, doc, new Uint8Array(message)))
-  if (docName === 'c8302e460baf4639abf8a0291809d531') {
-    logger.warn('start check the connection alive c8302e460baf4639abf8a0291809d531')
-  }
   // Check if connection is still alive
   let pongReceived = true
   const pingInterval = setInterval(() => {
@@ -304,9 +299,6 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     } else if (doc.conns.has(conn)) {
       pongReceived = false
       try {
-        if (docName === 'c8302e460baf4639abf8a0291809d531') {
-          logger.warn('start send c8302e460baf4639abf8a0291809d531 ping')
-        }
         conn.ping()
       } catch (e) {
         logger.error('close connection when ping,' + e + ',docName:' + docName)
@@ -316,14 +308,11 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     }
   }, pingTimeout)
   conn.on('close', (e) => {
-    logger.warn('trigger close event', e)
+    logger.warn('trigger close event, the doc:' + docName, e)
     closeConn(doc, conn)
     clearInterval(pingInterval)
   })
   conn.on('pong', () => {
-    if (docName === 'c8302e460baf4639abf8a0291809d531') {
-      logger.warn('ping recived c8302e460baf4639abf8a0291809d531 pong')
-    }
     pongReceived = true
   })
   // put the following in a variables in a block so the interval handlers don't keep in in

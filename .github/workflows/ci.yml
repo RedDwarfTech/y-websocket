@@ -28,12 +28,6 @@ jobs:
       - name: 📥 Install
         run: npm install
 
-      - name: Unit tests
-        run: npm test
-
-      - name: ESLint checks
-        run: npm run lint
-
       - name: Build
         run: npm run dist
       

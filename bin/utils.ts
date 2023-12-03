@@ -1,3 +1,5 @@
+import { IncomingMessage } from "http"
+
 const Y = require('yjs')
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
@@ -14,8 +16,8 @@ const callbackHandler = require('./callback.js').callbackHandler
 const isCallbackSet = require('./callback.js').isCallbackSet
 const rdfile = require('./rd_file.js')
 
-const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT) || 2000
-const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) || 10000
+const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT!) || 2000
+const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT!) || 10000
 const JWT_SIGN_KEY = process.env.JWT_SIGN_KEY || 'key-missing'
 
 const wsReadyStateConnecting = 0
@@ -32,7 +34,7 @@ const persistenceDir = process.env.YPERSISTENCE
 /**
  * @type {{bindState: function(string,WSSharedDoc):void, writeState:function(string,WSSharedDoc):Promise<any>, provider: any}|null}
  */
-let persistence = null
+let persistence
 if (typeof persistenceDir === 'string') {
   console.info('Persisting documents to "' + persistenceDir + '"')
   // @ts-ignore
@@ -98,7 +100,7 @@ class WSSharedDoc extends Y.Doc {
   /**
    * @param {string} name
    */
-  constructor (name) {
+  constructor(name) {
     super({ gc: gcEnabled })
     this.name = name
     /**
@@ -275,7 +277,7 @@ const handleAuth = (request, conn) => {
  * @param {IncomingMessage} req
  * @param {any} opts
  */
-exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[0], gc = true } = {}) => {
+exports.setupWSConnection = (conn: WebSocket, req: IncomingMessage, { docName = req.url!.slice(1).split('?')[0], gc = true } = {}) => {
   handleAuth(req, conn)
   conn.binaryType = 'arraybuffer'
   // get doc, initialize if it does not exist yet
@@ -283,10 +285,6 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
     logger.warn('start the c8302e460baf4639abf8a0291809d531 websocket connection....')
   }
   const doc = getYDoc(docName, gc)
-  if (docName === 'c8302e460baf4639abf8a0291809d531') {
-    const length = Y.encodeStateAsUpdate(doc).length
-    logger.warn('the doc length is ' + length)
-  }
   doc.conns.set(conn, new Set())
   // listen and reply to events
   conn.on('message', /** @param {ArrayBuffer} message */ message => messageListener(conn, doc, new Uint8Array(message)))

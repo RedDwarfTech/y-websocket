@@ -202,9 +202,7 @@ const messageListener = (conn, doc, message) => {
  * @param {any} conn
  */
 const closeConn = (doc, conn) => {
-  logger.warn('trigger close connection function' + doc.name)
   if (doc.conns.has(conn)) {
-    logger.warn('close the active connection' + doc.name)
     /**
      * @type {Set<number>}
      */
@@ -232,6 +230,7 @@ const closeConn = (doc, conn) => {
  */
 const send = (doc, conn, m) => {
   if (conn.readyState !== wsReadyStateConnecting && conn.readyState !== wsReadyStateOpen) {
+    logger.warn('connection state is not open, doc:' + doc.name)
     closeConn(doc, conn)
   }
   try {
@@ -282,10 +281,6 @@ exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[
   conn.binaryType = 'arraybuffer'
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docName, gc)
-  const length = Y.encodeStateAsUpdate(doc).length
-  if (length <= 2) {
-    logger.warn('the doc ' + docName + ' length is  ' + length + ', seems like empty')
-  }
   doc.conns.set(conn, new Set())
   // listen and reply to events
   conn.on('message', /** @param {ArrayBuffer} message */ message => messageListener(conn, doc, new Uint8Array(message)))

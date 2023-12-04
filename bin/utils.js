@@ -237,7 +237,9 @@ const send = (doc, conn, m) => {
   try {
     conn.send(m)
   } catch (e) {
-    logger.error('send message facing error,' + e)
+    const decoder = new TextDecoder('utf-8')
+    const text = decoder.decode(m)
+    logger.error('send message facing error,text:' + text, e)
     closeConn(doc, conn)
   }
 }

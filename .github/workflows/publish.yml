@@ -18,7 +18,7 @@ jobs:
           git config --global url."https://github".insteadOf ssh://git@github
           npm install -g pnpm 
           pnpm install
-          pnpm run build
+          pnpm run dist
         env:
           CI: false
       - uses: JS-DevTools/npm-publish@v2

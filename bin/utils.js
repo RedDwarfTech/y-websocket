@@ -254,6 +254,7 @@ const handleAuth = (request, conn) => {
   if (request.url !== '/healthz') {
     // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
     const token = url.searchParams.get('access_token')
+    const src = url.searchParams.get('from')
     try {
       jwt.verify(token, JWT_SIGN_KEY)
     } catch (err) {
@@ -263,7 +264,7 @@ const handleAuth = (request, conn) => {
           conn.close(WEBSOCKET_AUTH_TOKEN_EXPIRE)
           break
         case 'JsonWebTokenError':
-          logger.error('json web token facing error:' + err + ', request url:' + request.url + ',token:' + token)
+          logger.error('json web token facing error:' + err + ', request url:' + request.url + ',token:' + token + ',src=' + src)
           conn.close(WEBSOCKET_AUTH_FAILED)
           break
       }

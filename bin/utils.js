@@ -251,8 +251,7 @@ const pingTimeout = 20000
 */
 const handleAuth = (request, conn) => {
   const url = new URL(request.url, 'wss://ws.poemhub.top')
-  logger.info('request url is:' + request.url)
-  if (request.url !== '/healthz' && request.url !== 'ws://localhost:1234') {
+  if (request.url !== '/healthz' && request.headers.host !== 'localhost:1234') {
     // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
     const token = url.searchParams.get('access_token')
     const src = url.searchParams.get('from')
@@ -261,7 +260,7 @@ const handleAuth = (request, conn) => {
     } catch (err) {
       switch (err.name) {
         case 'TokenExpiredError':
-          logger.warn('token expired:' + err + ', request url:' + request.url + ',token:' + token)
+          logger.warn('token expired:' + err + ', request url:' + request.url + ',token:' + token + ',host:' + request.header.host)
           conn.close(WEBSOCKET_AUTH_TOKEN_EXPIRE)
           break
         case 'JsonWebTokenError':

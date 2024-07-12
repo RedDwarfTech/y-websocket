@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tex-websocket-service
+  namespace: reddwarf-pro
+  labels:
+    k8slens-edit-resource-version: v1
+status:
+  loadBalancer: {}
+spec:
+  ports:
+    - name: ws
+      protocol: TCP
+      port: 1234
+      targetPort: 1234
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+    - name: http-profile
+      protocol: TCP
+      port: 9229
+      targetPort: 9229
+  selector:
+    app: y-websocket-service
+  clusterIP: 10.97.147.90
+  clusterIPs:
+    - 10.97.147.90
+  type: ClusterIP
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster

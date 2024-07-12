@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: y-websocket-service
+  namespace: reddwarf-pro
+  labels:
+    app: y-websocket-service
+    k8slens-edit-resource-version: v1
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: y-websocket-service
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: y-websocket-service
+      annotations:
+        kubectl.kubernetes.io/restartedAt: '2024-03-06T16:11:49+08:00'
+    spec:
+      volumes:
+        - name: texhub-server-service-persistent-storage
+          persistentVolumeClaim:
+            claimName: texhub-server-service-pv-claim
+      containers:
+        - name: y-websocket-service
+          image: >-
+            registry.cn-hongkong.aliyuncs.com/reddwarf-pro/y-websocket:e17a511244442e6454326b7b5fb77126f5a22c97
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 11015
+              protocol: TCP
+          env:
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: y-websocket-service-pro-config
+                  key: redis_addr
+            - name: JWT_SIGN_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: y-websocket-service-pro-config
+                  key: jwt_sign_key
+            - name: ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: y-websocket-service-pro-config
+                  key: env
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: texhub-server-service-pro-config
+                  key: meili_master_key
+          resources:
+            limits:
+              cpu: 250m
+              memory: 650Mi
+            requests:
+              cpu: 20m
+              memory: 156Mi
+          volumeMounts:
+            - name: texhub-server-service-persistent-storage
+              mountPath: /opt/data
+              mountPropagation: HostToContainer
+          livenessProbe:
+            httpGet:
+              path: /health/healthz
+              port: 1234
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      imagePullSecrets:
+        - name: hongkong-regcred
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

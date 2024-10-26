@@ -8,7 +8,8 @@ exports.initTpl = (docId, projectId, initContext) => {
   }
   const ydoc = new Y.Doc(docOpt)
   const ytext = ydoc.getText(docId)
-  const wsProvider = new WebsocketProvider('ws://localhost:1234', docId, ydoc, { WebSocketPolyfill: require('ws') })
+  // https://github.com/node-fetch/node-fetch/issues/1624
+  const wsProvider = new WebsocketProvider('ws://127.0.0.1:1234', docId, ydoc, { WebSocketPolyfill: require('ws') })
   wsProvider.on('status', (event) => {
     if (event.status === 'connected') {
       console.log('connected')

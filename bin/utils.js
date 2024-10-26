@@ -273,7 +273,7 @@ const pingTimeout = 20000;
  */
 const handleAuth = (request, conn) => {
   const url = new URL(request.url, "wss://ws.poemhub.top");
-  if (request.url !== "/healthz" && request.headers.host !== "localhost:1234") {
+  if (request.url !== "/healthz" && request.headers.host !== "127.0.0.1:1234") {
     // https://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#query-param
     const token = url.searchParams.get("access_token");
     const src = url.searchParams.get("from");

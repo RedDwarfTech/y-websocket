@@ -355,9 +355,9 @@ exports.setupWSConnection = (
       }
     }
   }, pingTimeout);
-  conn.on("close", (e) => {
-    logger.warn("close reason:", e.reason);
-    logger.warn("trigger close event, the doc:" + docName, e);
+  conn.on("close", (code, reason) => {
+    logger.warn("close reason:" + reason +",code:"+ code);
+    logger.warn("trigger close event, the doc:" + docName);
     closeConn(doc, conn);
     clearInterval(pingInterval);
   });

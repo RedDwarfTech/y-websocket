@@ -356,6 +356,7 @@ exports.setupWSConnection = (
     }
   }, pingTimeout);
   conn.on("close", (e) => {
+    logger.warn("close reason:", e.reason);
     logger.warn("trigger close event, the doc:" + docName, e);
     closeConn(doc, conn);
     clearInterval(pingInterval);

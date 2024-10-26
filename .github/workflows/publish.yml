@@ -1,4 +1,4 @@
-name: rdy-websocket-publish
+name: rdy-websocket-npm-publish
 
 on:
   push:

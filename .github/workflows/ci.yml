@@ -1,4 +1,4 @@
-name: y-websocket-CI
+name: y-websocket-deployment
 
 on:
   push:

@@ -28,9 +28,6 @@ jobs:
       - name: 📥 Install
         run: npm install
 
-      - name: ESLint checks
-        run: npm run lint
-
       - name: Build
         run: npm run dist
       

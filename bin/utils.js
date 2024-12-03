@@ -282,16 +282,6 @@ const handleAuth = (request, conn) => {
     } catch (err) {
       switch (err.name) {
         case "TokenExpiredError":
-          logger.warn(
-            "token expired:" +
-              err +
-              ", request url:" +
-              request.url +
-              ",token:" +
-              token +
-              ",host:" +
-              request.headers.host
-          );
           conn.close(WEBSOCKET_AUTH_TOKEN_EXPIRE);
           break;
         case "JsonWebTokenError":
@@ -356,7 +346,7 @@ exports.setupWSConnection = (
     }
   }, pingTimeout);
   conn.on("close", (code, reason, wasClean) => {
-    if (code !== 1000) {
+    if (code !== 1000 && code !== 4001) {
       logger.error(
         "close reason:" +
           reason +

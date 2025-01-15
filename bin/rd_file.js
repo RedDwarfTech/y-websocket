@@ -5,7 +5,7 @@ const path = require('path')
 var log4js = require('log4js')
 var logger = log4js.getLogger()
 logger.level = 'warn'
-const updateFullsearch = require('./tex/fulltext_search.js').updateFullsearch
+const updateFullsearch = require('./tex/fulltext_search').updateFullsearch
 
 const throttledFn = lodash.throttle((docName, ldb) => {
   handleFileSync(docName, ldb)

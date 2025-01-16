@@ -3,7 +3,7 @@ import log4js from "log4js";
 var logger = log4js.getLogger()
 logger.level = 'warn'
 
-const updateFullsearch = async (file: any) => {
+export const updateFullsearch = async (file: any) => {
     try {
         const masterKey = process.env.MEILI_MASTER_KEY
         let option: DocumentOptions = {
@@ -20,7 +20,4 @@ const updateFullsearch = async (file: any) => {
     } catch (err) {
         logger.error('Failed to sync file index', err)
     }
-}
-module.exports = {
-    updateFullsearch
 }

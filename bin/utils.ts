@@ -15,9 +15,9 @@ const isCallbackSet = require("./callback.js").isCallbackSet;
 const rdfile = require("./rd_file.js");
 
 const CALLBACK_DEBOUNCE_WAIT =
-  parseInt(process.env.CALLBACK_DEBOUNCE_WAIT) || 2000;
+  parseInt(process.env.CALLBACK_DEBOUNCE_WAIT!) || 2000;
 const CALLBACK_DEBOUNCE_MAXWAIT =
-  parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) || 10000;
+  parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT!) || 10000;
 const JWT_SIGN_KEY = process.env.JWT_SIGN_KEY || "key-missing";
 
 const wsReadyStateConnecting = 0;

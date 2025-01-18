@@ -1,4 +1,4 @@
-const getFileJsonData = require('./rest_client.js').getFileJsonData
+const getJsonData = require('./rest_client.ts').getFileJsonData
 const fs = require('fs')
 const lodash = require('lodash')
 const path = require('path')
@@ -21,7 +21,7 @@ const handleFileSync = async (docName, ldb) => {
     if (!text || !text.toString()) {
       return
     }
-    let fileContent = await getFileJsonData(docName)
+    let fileContent = await getJsonData(docName)
     if (!fileContent) {
       logger.error(`get file info failed，file info: ${fileContent},docName:${docName}`)
       return

@@ -1,9 +1,9 @@
 const persistenceDir = process.env.YPERSISTENCE
-const express = require('express')
-const router = express.Router()
+const expressDoc = require('express')
+const routerDoc = expressDoc.Router()
 const initTpl = require('../tex/initial_tpl.js').initTpl
 
-router.get('/', async (req, res) => {
+routerDoc.get('/', async (req, res) => {
   const docId = req.params.docId
   const LeveldbPersistence = require('y-leveldb').LeveldbPersistence
   const ldb = new LeveldbPersistence(persistenceDir)
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 /**
  * https://discuss.yjs.dev/t/is-it-possible-to-using-http-to-do-some-initial-job/2108/1
  */
-router.post('/initial', async (req, res) => {
+routerDoc.post('/initial', async (req, res) => {
   const docId = req.body.doc_id
   const projectId = req.body.project_id
   const fileContent = req.body.file_content
@@ -23,4 +23,4 @@ router.post('/initial', async (req, res) => {
   res.end('success')
 })
 
-module.exports = router
+module.exports = routerDoc

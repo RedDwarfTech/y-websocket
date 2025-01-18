@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 
-/**
- * @type {any}
- */
-const WebSocket = require('ws')
+const wsSocket = require('ws')
 const http = require('http')
-const wss = new WebSocket.Server({ noServer: true })
+const wss = new wsSocket.Server({ noServer: true })
 const setupWSConnection = require('./utils.js').setupWSConnection
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 1234

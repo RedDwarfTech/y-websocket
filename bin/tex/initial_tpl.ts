@@ -1,4 +1,4 @@
-const Y = require('yjs')
+const globalY = require('yjs')
 const { WebsocketProvider } = require('y-websocket')
 
 exports.initTpl = (docId, projectId, initContext) => {
@@ -6,7 +6,7 @@ exports.initTpl = (docId, projectId, initContext) => {
     guid: docId,
     collectionid: projectId
   }
-  const ydoc = new Y.Doc(docOpt)
+  const ydoc = new globalY.Doc(docOpt)
   const ytext = ydoc.getText(docId)
   // https://github.com/node-fetch/node-fetch/issues/1624
   const wsProvider = new WebsocketProvider('ws://127.0.0.1:1234', docId, ydoc, { WebSocketPolyfill: require('ws') })

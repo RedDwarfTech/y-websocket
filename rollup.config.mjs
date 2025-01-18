@@ -1,18 +1,35 @@
+import typescript from "rollup-plugin-typescript2"; // 处理typescript
+import babel from "@rollup/plugin-babel";
+
 export default {
-  input: './src/y-websocket.js',
-  external: id => /^(lib0|yjs|y-protocols)/.test(id),
-  output: [{
-    name: 'y-websocket',
-    file: 'dist/y-websocket.cjs',
-    format: 'cjs',
-    sourcemap: true,
-    paths: path => {
-      if (/^lib0\//.test(path)) {
-        return `lib0/dist${path.slice(4)}.cjs`
-      } else if (/^y-protocols\//.test(path)) {
-        return `y-protocols/dist${path.slice(11)}.cjs`
-      }
-      return path
-    }
-  }]
-}
+  input: "./src/y-websocket.ts",
+  external: (id) => /^(lib0|yjs|y-protocols)/.test(id),
+  output: [
+    {
+      name: "y-websocket",
+      file: "dist/y-websocket.cjs",
+      format: "cjs",
+      sourcemap: true,
+      dir: "dist",
+      paths: (path) => {
+        if (/^lib0\//.test(path)) {
+          return `lib0/dist${path.slice(4)}.cjs`;
+        } else if (/^y-protocols\//.test(path)) {
+          return `y-protocols/dist${path.slice(11)}.cjs`;
+        }
+        return path;
+      },
+      plugins: [
+        babel({
+          babelrc: false,
+          presets: [["@babel/preset-env", { modules: false, loose: true }]],
+          plugins: [
+            ["@babel/plugin-proposal-class-properties", { loose: true }],
+          ],
+          exclude: "node_modules/**",
+        }),
+        typescript(),
+      ],
+    },
+  ],
+};

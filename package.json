@@ -3,7 +3,7 @@
   "version": "1.5.1",
   "description": "Websockets provider for Yjs",
   "main": "./dist/y-websocket.cjs",
-  "module": "./src/y-websocket.js",
+  "module": "./src/y-websocket.ts",
   "types": "./dist/src/y-websocket.d.ts",
   "sideEffects": false,
   "funding": {
@@ -11,8 +11,10 @@
     "url": "https://github.com/sponsors/dmonad"
   },
   "scripts": {
-    "start": "node ./bin/server-express.js",
+    "start": "node ./bin/server-express.ts",
     "dist": "rm -rf dist && rollup -c && tsc",
+    "build": "tsc --outDir dist/lib --declarationDir dist/types --declaration true && rollup -c",
+    "vite-build": "vite build",
     "lint": "standard && tsc",
     "test": "npm run lint",
     "preversion": "npm run lint && npm run dist && test -e dist/src/y-websocket.d.ts && test -e dist/y-websocket.cjs"
@@ -31,7 +33,7 @@
     "./bin/utils": "./bin/utils.js",
     "./bin/callback": "./bin/callback.js",
     ".": {
-      "module": "./src/y-websocket.js",
+      "module": "./src/y-websocket.ts",
       "import": "./src/y-websocket.js",
       "require": "./dist/y-websocket.cjs",
       "types": "./dist/src/y-websocket.d.ts"
@@ -68,13 +70,23 @@
     "meilisearch": "^0.35.0",
     "prom-client": "^14.2.0",
     "prometheus-api-metrics": "^3.2.2",
+    "vite": "^6.0.7",
     "y-protocols": "^1.0.5",
     "y-websocket": "^1.5.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/preset-env": "^7.26.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^18.15.0",
-    "rollup": "^3.19.1",
+    "rimraf": "^6.0.1",
+    "rollup": "^3.27.0",
+    "rollup-plugin-typescript2": "^0.36.0",
     "standard": "^12.0.1",
+    "tslib": "^2.8.1",
     "typescript": "^4.9.5",
     "yjs": "^13.5.0"
   },

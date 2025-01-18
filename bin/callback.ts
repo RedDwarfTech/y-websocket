@@ -1,4 +1,4 @@
-const http = require('http')
+const httpclient = require('http')
 
 const CALLBACK_URL = process.env.CALLBACK_URL ? new URL(process.env.CALLBACK_URL) : null
 const CALLBACK_TIMEOUT = process.env.CALLBACK_TIMEOUT || 5000
@@ -46,7 +46,7 @@ const callbackRequest = (url, timeout, data) => {
       'Content-Length': data.length
     }
   }
-  const req = http.request(options)
+  const req = httpclient.request(options)
   req.on('timeout', () => {
     console.warn('Callback request timed out.')
     req.abort()

@@ -4,6 +4,9 @@ import babel from "@rollup/plugin-babel";
 export default {
   input: "./src/y-websocket.ts",
   external: (id) => /^(lib0|yjs|y-protocols)/.test(id),
+  plugins: [
+    typescript()
+  ],
   output: [
     {
       name: "y-websocket",
@@ -19,17 +22,7 @@ export default {
         }
         return path;
       },
-      plugins: [
-        babel({
-          babelrc: false,
-          presets: [["@babel/preset-env", { modules: false, loose: true }]],
-          plugins: [
-            ["@babel/plugin-proposal-class-properties", { loose: true }],
-          ],
-          exclude: "node_modules/**",
-        }),
-        typescript(),
-      ],
+      
     },
   ],
 };

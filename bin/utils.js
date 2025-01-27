@@ -216,7 +216,7 @@ const messageListener = (conn, doc, message) => {
 
 /**
  * @param {WSSharedDoc} doc
- * @param {any} conn
+ * @param {WebSocket} conn
  */
 const closeConn = (doc, conn) => {
   if (doc.conns.has(conn)) {
@@ -240,7 +240,7 @@ const closeConn = (doc, conn) => {
       doc.name = null;
     }
   }
-  conn.close(4000);
+  conn.close(4000,"the server closed the websocket");
   conn = null;
 };
 

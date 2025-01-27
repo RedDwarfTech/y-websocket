@@ -218,7 +218,7 @@ const messageListener = (conn, doc, message) => {
  * @param {WSSharedDoc} doc
  * @param {WebSocket} conn
  */
-const closeConn = (doc, conn) => {
+const closeConn = (doc, conn, reason) => {
   if (doc.conns.has(conn)) {
     /**
      * @type {Set<number>}
@@ -240,7 +240,7 @@ const closeConn = (doc, conn) => {
       doc.name = null;
     }
   }
-  conn.close(4000,"the server closed the websocket");
+  conn.close(1000, reason);
   conn = null;
 };
 
@@ -255,13 +255,13 @@ const send = (doc, conn, m) => {
       conn.send(m);
     } else {
       logger.warn("connection state is not open, doc:" + doc.name);
-      closeConn(doc, conn);
+      closeConn(doc, conn, "close because connection state not open");
     }
   } catch (e) {
     const decoder = new TextDecoder("utf-8");
     const text = decoder.decode(m);
     logger.error("send message facing error,text:" + text, e);
-    closeConn(doc, conn);
+    closeConn(doc, conn, "close send msg error");
   }
 };
 
@@ -331,7 +331,7 @@ exports.setupWSConnection = (
         logger.warn(
           "close connection pong, pong:" + pongReceived + ",docName:" + docName
         );
-        closeConn(doc, conn);
+        closeConn(doc, conn, "close connection pong, pong");
       }
       clearInterval(pingInterval);
     } else if (doc.conns.has(conn)) {
@@ -340,7 +340,7 @@ exports.setupWSConnection = (
         conn.ping();
       } catch (e) {
         logger.error("close connection when ping," + e + ",docName:" + docName);
-        closeConn(doc, conn);
+        closeConn(doc, conn, "close connection when ping");
         clearInterval(pingInterval);
       }
     }
@@ -358,7 +358,7 @@ exports.setupWSConnection = (
           docName
       );
     }
-    closeConn(doc, conn);
+    closeConn(doc, conn, "close by reson:" + reason);
     clearInterval(pingInterval);
   });
   conn.on("pong", () => {
